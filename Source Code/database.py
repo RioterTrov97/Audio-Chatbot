@@ -6,7 +6,7 @@ def db_insert(fn,mn,ln,e,pw,ad,n):
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("Successfully Connected to SQLite")
+        print("db_insert: Successfully Connected to SQLite")
         
         sqlite_insert_query = '''INSERT INTO user (user_fname, user_mname, user_lname, email, password, address, nickname) VALUES
                                     (?,?,?,?,?,?,?);'''
@@ -29,7 +29,7 @@ def db_nickname(n,uid, email):
         import main
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("Successfully Connected to SQLite")
+        print("db_nickname: Successfully Connected to SQLite")
         
         sqlite_insert_query = '''UPDATE user SET nickname = ? WHERE user_id = ?'''
         
@@ -54,19 +54,38 @@ def db_nickname(n,uid, email):
             sqliteConnection.close()
             print("sqlite connection is closed")
 
-def db_create():
+def db_createdb():
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("Successfully Connected to SQLite")
+        print("db_create: Successfully Connected to SQLite")
         
-        sqlite_insert_query = '''INSERT INTO user (user_fname, user_mname, user_lname, email, password, address, nickname) VALUES
-                                    (?,?,?,?,?,?,?);'''
+        sqlite_insert_query = '''CREATE TABLE IF NOT EXISTS user (	"user_id"	INTEGER,	"user_fname"	TEXT NOT NULL,
+        "user_mname"	TEXT,	"user_lname"	TEXT NOT NULL,	"email"	TEXT NOT NULL UNIQUE,	"password"	TEXT NOT NULL,
+        "address"	TEXT,	"nickname"	TEXT,	PRIMARY KEY("user_id" AUTOINCREMENT));'''
         
-        cursor.execute(sqlite_insert_query, (fn,mn,ln,e,pw,ad,n))
+        cursor.execute(sqlite_insert_query)
         sqliteConnection.commit()
-        print("SQLite user created")
-
+        cursor.close()
+        create_admin()
+    except sqlite3.Error as error:
+        print("Error while creating a sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("sqlite connection is closed")
+def create_admin():
+    try:
+        sqliteConnection = sqlite3.connect('chatbot.db')
+        cursor = sqliteConnection.cursor()
+        print("db_admin: Successfully Connected to SQLite")
+        
+        sqlite_select_query = "SELECT * FROM user"
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        if (len(records)) < 1:
+            db_insert("root","root","root","root","root","root","root")
+            print("SQLite database created and populated with default details.")
         cursor.close()
 
     except sqlite3.Error as error:
@@ -81,7 +100,7 @@ def check_user_data(email, password):
         import main
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
+        print("check_user_data: Successfully Connected to SQLite")
 
         sqlite_select_query = "SELECT * FROM user WHERE email = ? AND password = ?"
         cursor.execute(sqlite_select_query, (email,password))
@@ -183,6 +202,6 @@ def join():
         print("Sorry wrong number")
         join()
 
-
-if __name__ == '__main__':
+def start():
+    db_createdb()
     join()
