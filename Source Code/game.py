@@ -12,8 +12,9 @@ def core():
 
     main.voice_data = recorder.record_audio("Choose among rock, paper or scissor:")
     moves=["rock", "paper", "scissor"]
+    pmoves=["rock", "paper", "scissor", "caesar"]
     
-    if main.voice_data not in moves:
+    if main.voice_data not in pmoves:
         error()
     else:
         import random
@@ -33,9 +34,9 @@ def core():
             speaker.speech_output("The winner is " + main.person_obj.name+ "! Looks like someone is luckier today!")
         elif pmove== "paper" and cmove== "scissor":
             speaker.speech_output("The winner is " + main.asis_obj.name + "! I hope i did not play you out. hehe.")
-        elif pmove== "scissor" and cmove== "paper":
+        elif (pmove== "scissor" or pmove== "caesar") and cmove== "paper":
             speaker.speech_output("The winner is " + main.person_obj.name + ". Aha! You're awesome.")
-        elif pmove== "scissor" and cmove== "rock":
+        elif (pmove== "scissor" or pmove== "caesar") and cmove== "rock":
             speaker.speech_output("The winner is " + main.asis_obj.name + "! I love rock and roll!")
 
         main.voice_data = recorder.record_audio("Do you want to play again? You can say 'quit' to quit the game. Or say 'play' to play again.")
