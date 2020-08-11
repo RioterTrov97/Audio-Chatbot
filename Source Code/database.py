@@ -74,6 +74,7 @@ def db_createdb():
         if (sqliteConnection):
             sqliteConnection.close()
             print("sqlite connection is closed")
+
 def create_admin():
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
