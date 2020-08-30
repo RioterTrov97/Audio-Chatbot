@@ -139,7 +139,7 @@ def response(voice_data, q, n):
 
     elif main.person_says(["sing me a song", "play a song", "play song"]):
         from playsound import playsound
-        playsound('song.mp3')        
+        playsound('song/song.mp3')        
 
     else:
         if main.error_count0 == main.error_count:

@@ -13,12 +13,12 @@ def online_output(audio_string):
         tts = gTTS(text=audio_string, lang='en') # text to speech(voice)
         r = random.randint(1,20000000)
         audio_file = 'audio' + str(r) + '.mp3'
-        tts.save(audio_file) # save as mp3
-        playsound.playsound(audio_file) # play the audio file
+        tts.save('audio/'+ audio_file) # save as mp3
+        playsound.playsound('audio/' + audio_file) # play the audio file
         spoken_text =   str(main.asis_obj.name) + ": " + str(audio_string)
         #GUI_update(spoken_text)
         print(main.asis_obj.name + ": ", audio_string) # print what app said
-        os.remove(audio_file) # remove audio file
+        os.remove('audio/' + audio_file) # remove audio file
     else:
         #import speaker
         #speaker.speech_output("Beep")

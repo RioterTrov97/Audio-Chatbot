@@ -161,10 +161,10 @@ def login_verify(root):
     log = database.check_user_data(e, pw)
     
     if log:
-        
         root.destroy()
         import chat_page
         chat_page.user_data(e,pw)
+        chat_page.chat_page_loader()
 
     else:
         user_not_found(root)

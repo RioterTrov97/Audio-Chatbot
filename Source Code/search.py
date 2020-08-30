@@ -294,7 +294,7 @@ def watchvideo(url, num, q):
             options.add_argument('headless')
             options.add_argument("disable-infobars")
             options.add_argument("--disable-extensions")
-            driver=webdriver.Chrome(options=options, executable_path=r'chromedriver.exe', service_log_path='NUL')
+            driver=webdriver.Chrome(options=options, executable_path=r'chrome_driver/chromedriver.exe', service_log_path='NUL')
             q.put(main.asis_obj.name + ": " + "Give me a few seconds." + "\n")
             speaker.speech_output("Give me a few seconds.")
             driver.get("https://www.youtube.com/results?search_query=" + url)
