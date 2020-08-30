@@ -1,41 +1,39 @@
-
 import sqlite3
-uid = ''
 
 def db_insert(fn,mn,ln,e,pw,ad,n):
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("db_insert: Successfully Connected to SQLite")
+        #print("db_insert: Successfully Connected to SQLite")
         
         sqlite_insert_query = '''INSERT INTO user (user_fname, user_mname, user_lname, email, password, address, nickname) VALUES
                                     (?,?,?,?,?,?,?);'''
         
         cursor.execute(sqlite_insert_query, (fn,mn,ln,e,pw,ad,n))
         sqliteConnection.commit()
-        print("SQLite user created")
+        #print("SQLite user created")
 
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Error while creating a sqlite table", error)
+        print("Error while inserting into sqlite table. Please provide all the required details.", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("sqlite connection is closed")
+            #print("sqlite connection is closed")
 
 def db_nickname(n,uid, email):
     try:
         import main
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("db_nickname: Successfully Connected to SQLite")
+        #print("db_nickname: Successfully Connected to SQLite")
         
         sqlite_insert_query = '''UPDATE user SET nickname = ? WHERE user_id = ?'''
         
         cursor.execute(sqlite_insert_query, (n, uid))
         sqliteConnection.commit()
-        print("SQLite nickname updated")
+        #print("SQLite log: nickname updated")
 
         sqlite_select_query = "SELECT * FROM user WHERE email = ?"
         cursor.execute(sqlite_select_query, (email,))
@@ -48,17 +46,17 @@ def db_nickname(n,uid, email):
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Error while creating a sqlite table", error)
+        print("Error while updating nickname in sqlite table", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("sqlite connection is closed")
+            #print("sqlite connection is closed")
 
 def db_createdb():
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("db_create: Successfully Connected to SQLite")
+        #print("db_create: Successfully Connected to SQLite")
         
         sqlite_insert_query = '''CREATE TABLE IF NOT EXISTS user (	"user_id"	INTEGER,	"user_fname"	TEXT NOT NULL,
         "user_mname"	TEXT,	"user_lname"	TEXT NOT NULL,	"email"	TEXT NOT NULL UNIQUE,	"password"	TEXT NOT NULL,
@@ -69,39 +67,39 @@ def db_createdb():
         cursor.close()
         create_admin()
     except sqlite3.Error as error:
-        print("Error while creating a sqlite table", error)
+        print("Error while creating a sqlite database and a table", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("sqlite connection is closed")
+            #print("sqlite connection is closed")
 
 def create_admin():
     try:
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("db_admin: Successfully Connected to SQLite")
+        #print("db_admin: Successfully Connected to SQLite")
         
         sqlite_select_query = "SELECT * FROM user"
         cursor.execute(sqlite_select_query)
         records = cursor.fetchall()
         if (len(records)) < 1:
-            db_insert("root","root","root","root","root","root","root")
-            print("SQLite database created and populated with default details.")
+            db_insert("root","root","root","root","root","root","")
+            #print("SQLite database created and populated with default details.")
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Error while creating a sqlite table", error)
+        print("Error while creating a sqlite entry for default records", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("sqlite connection is closed")
+            #print("sqlite connection is closed")
 
 def check_user_data(email, password):
     try:
         import main
         sqliteConnection = sqlite3.connect('chatbot.db')
         cursor = sqliteConnection.cursor()
-        print("check_user_data: Successfully Connected to SQLite")
+        #print("check_user_data: Successfully Connected to SQLite")
 
         sqlite_select_query = "SELECT * FROM user WHERE email = ? AND password = ?"
         cursor.execute(sqlite_select_query, (email,password))
@@ -109,7 +107,8 @@ def check_user_data(email, password):
         for row in records:
             main.uid = int(row[0])
             main.email = str(row[4])
-            main.person_obj.name = str(row[7])
+            name = str(row[7])
+            name = default_name(name)
 
         if (len(records) > 0):
             print("You are successfully logged in")
@@ -123,7 +122,63 @@ def check_user_data(email, password):
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("The Sqlite connection is closed")
+            #print("The Sqlite connection is closed")
+
+def get_user_data(email, password):
+    try:
+        import main
+        sqliteConnection = sqlite3.connect('chatbot.db')
+        cursor = sqliteConnection.cursor()
+        #print("check_user_data: Successfully Connected to SQLite")
+
+        sqlite_select_query = "SELECT * FROM user WHERE email = ? AND password = ?"
+        cursor.execute(sqlite_select_query, (email,password))
+        records = cursor.fetchall()
+        for row in records:
+            main.uid = int(row[0])
+            main.email = str(row[4])
+            name = str(row[7])
+            name = default_name(name)
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            #print("The Sqlite connection is closed")
+
+def check_default_data(email, password):
+    try:
+        import main
+        sqliteConnection = sqlite3.connect('chatbot.db')
+        cursor = sqliteConnection.cursor()
+        #print("check_user_data: Successfully Connected to SQLite")
+
+        sqlite_select_query = "SELECT * FROM user WHERE email = ? AND password = ?"
+        cursor.execute(sqlite_select_query, (email,password))
+        records = cursor.fetchall()
+        for row in records:
+            main.uid = int(row[0])
+            main.email = str(row[4])
+            name = str(row[7])
+            name = default_name(name)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            #print("The Sqlite connection is closed")
+
+def default_name(name):
+    import main
+    if (name == ""):
+        main.person_obj.name = 'Master'
+    else:
+        main.person_obj.name = name
 
 def register():
     fn = input ("Enter your first name: ")
@@ -147,7 +202,7 @@ def pw_check(e):
             return (pas)
         else:
             print("Sorry your password does not match")
-            return (pw_check(e = "as@gmail.com"))
+            return (pw_check(e))
     else:
         print("Email is empty")
         register()
@@ -159,12 +214,14 @@ def login():
     pw = input ("Enter your password: ")
     log = check_user_data(e, pw)
     if log:
-        main.initial_greeting()
+        import queue
+        q = queue.Queue()
+        main.initial_greeting(q)
     else:
         print("Your email or password is incorrect.")
         error()
 
-def error():
+def db_error():
     try:
             value = int(input("Enter 1 to login again or 2 to main menu."))
             if (value == 1):
@@ -173,15 +230,15 @@ def error():
                 join()
             else:
                 print("Sorry wrong number")
-                error()
+                db_error()
     except Exception:
             print("Sorry wrong number")
-            error()
+            db_error()
 
 def join():
     try:
         print(" --------------------------------------------------------------------")
-        print(" |                     ***Chatbot Cutie pie!***                        |")
+        print(" |                     ***Chatbot Cutie pie!***                     |")
         print(" |                                                                  |")
         print(" |                   ***Commandline version***                      |")
         print(" |                                                                  |")
@@ -197,10 +254,17 @@ def join():
         elif (val == 2):
             register()
         else:
-            print("Sorry wrong number")
+            import os
+            clear = lambda: os.system('cls')
+            clear()
+
+            print("\n***Sorry you selected wrong number***\n")
             join()
     except Exception:
-        print("Sorry wrong number")
+        import os
+        os.system('cls')
+        import speaker
+        speaker.offline_output('Sorry, the service is down. Please connect to the internet and try again.')
         join()
 
 def start():

@@ -1,6 +1,7 @@
-def time_speaker():
+def time_speaker(q):
         from datetime import datetime
         import speaker
+        import main
         current_time = datetime.now().strftime("%H:%M:%S")
         hour, minute, second = current_time.split(':')
         hours, minutes, seconds = int(hour), int(minute), int(second)
@@ -17,11 +18,13 @@ def time_speaker():
 
         time = "The current time is " + str(hours) + ":" + str(minutes) + meridian + "."
         #print("Current time = " + time)
+        q.put(main.asis_obj.name + ": " + time + "\n")
         speaker.speech_output(time)
 
-def date_speaker():
+def date_speaker(q):
         from datetime import datetime
         import speaker
+        import main
 
         month_name = "January"
         day_note = "st"
@@ -64,4 +67,5 @@ def date_speaker():
             day_note = "th"
 
         date = "Today is " + str(days) + day_note + " of " + month_name + ", " + str(years)
+        q.put(main.asis_obj.name + ": " + date + "\n")
         speaker.speech_output(date)

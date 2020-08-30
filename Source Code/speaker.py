@@ -15,6 +15,8 @@ def online_output(audio_string):
         audio_file = 'audio' + str(r) + '.mp3'
         tts.save(audio_file) # save as mp3
         playsound.playsound(audio_file) # play the audio file
+        spoken_text =   str(main.asis_obj.name) + ": " + str(audio_string)
+        #GUI_update(spoken_text)
         print(main.asis_obj.name + ": ", audio_string) # print what app said
         os.remove(audio_file) # remove audio file
     else:
@@ -22,6 +24,10 @@ def online_output(audio_string):
         #speaker.speech_output("Beep")
         main.main_page()
          
+def GUI_update(strin):
+    import chatbot_GUI
+    chat = chatbot_GUI.Chat_Window()
+    chat.update_text(strin)
 
 def offline_output(audio_data):
     import pyttsx3
