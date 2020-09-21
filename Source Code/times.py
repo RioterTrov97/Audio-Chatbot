@@ -69,3 +69,30 @@ def date_speaker(q):
         date = "Today is " + str(days) + day_note + " of " + month_name + ", " + str(years)
         q.put(main.asis_obj.name + ": " + date + "\n")
         speaker.speech_output(date)
+
+def greeter(q):
+    from datetime import datetime
+    import speaker
+    import main
+    current_time = datetime.now().strftime("%H:%M:%S")
+    hour, minute, second = current_time.split(':')
+    hours = int(hour)
+    if (hours > 4) and (hours < 12):
+        q.put(main.asis_obj.name + ":" + "Good Morning! " + main.person_obj.name +"\n")
+        speaker.speech_output("Good Morning! " + main.person_obj.name)
+
+    elif (hours == 12):
+        q.put(main.asis_obj.name + ": " + "Good Noon! " + main.person_obj.name + "\n")
+        speaker.speech_output("Good Noon! " + main.person_obj.name)
+
+    elif (hours > 12) and (hours < 18):
+        q.put(main.asis_obj.name + ": " + "Good Afternoon! " + main.person_obj.name + "\n")
+        speaker.speech_output("Good Afternoon! " + main.person_obj.name)
+
+    elif (hours >= 18) and (hours < 20):
+        q.put(main.asis_obj.name + ": " + "Good Evening! " + main.person_obj.name + "\n")
+        speaker.speech_output("Good Evening! " + main.person_obj.name)
+
+    else:
+        q.put(main.asis_obj.name + ": " + "Good Night! " + main.person_obj.name + "\n")
+        speaker.speech_output("Good Night! " + main.person_obj.name)

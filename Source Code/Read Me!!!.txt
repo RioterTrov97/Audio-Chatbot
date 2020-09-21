@@ -1,20 +1,34 @@
------------------------------------------
-|	      ***Important***		|
-|		    			|
-| The executable file can be found in:  | 
-|					|
-|      dist/cutiepie/cutiepie.exe       |
-|					|
------------------------------------------
+	-----------------------------------------
+	|	      ***Important***		|
+	|		    			|
+	| The executable file can be found in:  | 
+	|					|
+	|      dist/Cutiepie/Cutiepie.exe 	|
+	|					|
+	-----------------------------------------
 
-	***Cutiepie - the audio chatbot***
+***********************************************************************************
 
-Remember: Speak only after chatbot finishes speaking. Background thread has not been optimised yet.
+  	                    !!! NOTE !!!
+
+     If it shows warning while running the chatbot_GUI.exe, 
+  please ignore it and choose "more info" and click "Run anyway".
+
+  If you do not want to register account, you can use deafult account:
+           Default account --> email: root, Password: root
+
+***********************************************************************************
+
+	   ***Cutiepie - the audio chatbot***
+
+Remember: Speak only after chatbot finishes speaking. 
+Background thread has not been optimised yet.
 
 Features available yet:
 
 1. search on google --> e.g. say "search for football on google"
-2. search on youtube --> e.g. say "search for football on youtube" then say play "second video"
+2. search on youtube --> e.g. say "search for football on youtube"
+                              then say play "second video".
 3. definitions --> e.g. say "what is football"
 4. price of items --> e.g. say "what is the price of apple watch on google"
 5. coversations --> say "hi" or "tell me a joke" or "what is your name"
@@ -23,31 +37,5 @@ Features available yet:
 8. take screenshots --> say "take screenshot"
 9. ask weather --> say "what is today's weather"
 10. ask simple calculations --> say "what is two plus two"
-
-***********************************************************************************
-
-(For Developers only)
-# Rayna Speech Assistant Dependencies
-
-Please install these libraries before using the application(Use CMD for these commands in Windows):
-
-1. -->pip install speechrecognition
-
-2. -->pip install pipwin
-   -->pipwin install pyaudio
-
-3. -->pip install playsound
-
-4. -->pip install wikipedia-api
-
-5. -->pip install gTTS
-
-6. -->pip install pyttsx3
-
-7. -->pip install selenium
-
-If you found any errors during the installation, please copy and 
-paste the error in google search to find the solution for it.
-
 
 ***********************************************************************************

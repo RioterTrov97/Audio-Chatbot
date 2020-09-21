@@ -22,8 +22,12 @@ voice_data1 = ''
 empty_count = 0
 error_count = 0
 error_count0 = 0
-run = True
-brun = True
+run = True #flag for main thread
+brun = False #flag for background thread
+crun = False #flag for chat thread
+chat_check = False #flag for checking if chat thread is running
+irun = True #flag for internet check
+jrun = True #flag for checks
 import respond
 import speaker
 import recorder
@@ -43,10 +47,11 @@ def main_page(q):
     
 
 def initial_greeting(q,n):
-    if n == 1:
+    global run
+    run = True
+    if n == 1 and irun == True:
         q.put(asis_obj.name+ ": Hi " + person_obj.name + ", How can I help you?\n")
         speaker.speech_output("Hi " + person_obj.name + ", How can I help you?")
-    print("\n***Please speak after i finish speaking. I am still learning to hear you as soon as i can.***\n")
     main_page(q)
 
 def listen(ask,q):

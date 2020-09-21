@@ -124,6 +124,53 @@ def check_user_data(email, password):
             sqliteConnection.close()
             #print("The Sqlite connection is closed")
 
+def check_users_data(email, fname, lname):
+    try:
+        import main
+        sqliteConnection = sqlite3.connect('chatbot.db')
+        cursor = sqliteConnection.cursor()
+        #print("check_user_data: Successfully Connected to SQLite")
+        email, fname, lname = str(email), str(fname), str(lname)
+        sqlite_select_query = "SELECT * FROM user WHERE email = ? AND user_fname = ? AND user_lname = ?"
+        cursor.execute(sqlite_select_query, (email, fname, lname))
+        records = cursor.fetchall()
+        for row in records:
+            main.uid = int(row[0])
+
+        if (len(records) > 0):
+            return True
+        else:
+            return False
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            #print("The Sqlite connection is closed")
+
+def db_password(password):
+    try:
+        import main
+        sqliteConnection = sqlite3.connect('chatbot.db')
+        cursor = sqliteConnection.cursor()
+        #print("db_nickname: Successfully Connected to SQLite")
+        
+        sqlite_insert_query = '''UPDATE user SET password = ? WHERE user_id = ?'''
+        
+        cursor.execute(sqlite_insert_query, (password, main.uid))
+        sqliteConnection.commit()
+        #print("SQLite log: nickname updated")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Error while updating nickname in sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            #print("sqlite connection is closed")
+
 def get_user_data(email, password):
     try:
         import main
@@ -270,3 +317,7 @@ def join():
 def start():
     db_createdb()
     join()
+
+if __name__ == '__main__':
+    print("Program starting........")
+    start()
