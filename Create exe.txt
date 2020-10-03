@@ -1,2 +1,0 @@
-cd Desktop/Source Code
-pyinstaller -D -n "Cutiepie" -i "pics\icon.ico" -w chatbot_GUI.py
